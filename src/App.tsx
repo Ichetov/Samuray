@@ -6,6 +6,7 @@ import { Profile } from './components/profile/Profile';
 import { Footer } from './components/footer/Footer';
 import { Dialogs } from './components/dialogs/Dialogs';
 import { Wrapper } from './Wrapper';
+import { Route, Routes } from 'react-router-dom';
 
 
 
@@ -17,8 +18,10 @@ function App() {
       <Header />
       <Sidebar />
       <Wrapper>
-        <Profile/>
-        {/* <Dialogs /> */}
+        <Routes>
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/dialogs' element={<Dialogs />} />
+        </Routes>
       </Wrapper>
       {/* <Footer/> */}
     </div>
