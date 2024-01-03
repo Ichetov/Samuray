@@ -26,5 +26,8 @@ const StyledList = styled.ul`
  & > li{
     list-style: none; 
  }
+ & > li + li{
+    margin-top: 10px;
+ }
 `
 

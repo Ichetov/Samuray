@@ -3,16 +3,14 @@ import { Container } from "../Container"
 
 
 
-export const Messages = () => {
+export const Dialogs = () => {
     return (
         <StyledMessages>
-            <Container>
-
-            </Container>
+           
         </StyledMessages>
     )
 }
 
 const StyledMessages = styled.section`
-
+ 
 `
