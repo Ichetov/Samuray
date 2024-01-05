@@ -1,14 +1,19 @@
 import styled from "styled-components"
-import icon from "./../../images/ec036f0f1cddedb4d0a7b1176c747982.jpeg"
+
 import { Container } from "../Container"
 import { MyPost } from "./posts/MyPosts"
+import { ProfileInfo } from "./posts/profileInfo/ProfileInfo"
+import { PostType } from "./posts/post/Post"
 
+type ProfilePropsType = {
+    postMessages: Array<PostType>
+}
 
-export const Profile = () => {
+export const Profile: React.FC<ProfilePropsType> = ({postMessages}) => {
     return (
         <StyledProfile>
-            <Img src={icon} />
-            <MyPost />
+            <ProfileInfo />
+            <MyPost postMessages = {postMessages}/>
         </StyledProfile>
     )
 }
@@ -17,6 +22,3 @@ const StyledProfile = styled.section`
 
 `
 
-const Img = styled.img`
- width: 100%;
-`

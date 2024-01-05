@@ -9,7 +9,7 @@ export const Sidebar = () => {
             <StyledList>
                 <li><NavLink className={({ isActive, isPending }) =>
                     isActive ? "active" : ""}
-                    to='profile' >Profile</NavLink></li>
+                    to='/profile' >Profile</NavLink></li>
                 <li><NavLink to='dialogs'>Messages</NavLink></li>
                 <li><a >News</a></li>
                 <li><a >Music</a></li>
