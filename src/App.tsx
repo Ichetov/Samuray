@@ -3,32 +3,28 @@ import './App.css';
 import { Header } from './components/header/Header';
 import { Sidebar } from './components/sidebar/Sidebar';
 import { Profile } from './components/profile/Profile';
-import { Footer } from './components/footer/Footer';
 import { Dialogs } from './components/dialogs/Dialogs';
 import { Wrapper } from './Wrapper';
 import { Route, Routes } from 'react-router-dom';
-import { PostType } from './components/profile/posts/post/Post';
-import { DialogPropsType } from './components/dialogs/Dialog';
-import { MessagePropsType } from './components/dialogs/Message';
+import { statePropsType } from './components/redux/State';
+
 
 
 type AppPropsType = {
-  postMessages: Array<PostType>
-  dialogsData: Array<DialogPropsType>
-  postData: Array<MessagePropsType>
+state: statePropsType
 }
 
 
-function App({postMessages, dialogsData,postData}: AppPropsType) {
+function App({state}: AppPropsType) {
 
   return (
     <div className="App">
       <Header />
-      <Sidebar />
+      <Sidebar sidebarData = {state.sidebar.sidebarData}/>
       <Wrapper>
         <Routes>
-          <Route path='/profile' element={<Profile postMessages = {postMessages}/>} />
-          <Route path='/dialogs/*' element={<Dialogs postData = {postData} dialogsData = {dialogsData}/>} />
+          <Route path='/profile' element={<Profile postMessages = {state.profile.postMessages}/>} />
+          <Route path='/dialogs/*' element={<Dialogs dialogs = {state.dialogs}/>} />
         </Routes>
       </Wrapper>
       {/* <Footer/> */}

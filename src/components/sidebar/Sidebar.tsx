@@ -1,9 +1,17 @@
 import { NavLink } from "react-router-dom"
 import styled from "styled-components"
 import { Container } from "../Container"
+import { sidebarObjPropsType } from "../redux/State"
 
 
-export const Sidebar = () => {
+type MessagesSidebarPropsType = {
+    sidebarData: Array<sidebarObjPropsType>
+}
+
+export const Sidebar: React.FC<MessagesSidebarPropsType> = ({ sidebarData }) => {
+    let frends = sidebarData.map(item => {
+        return <div key={item.id}><Img src={item.photo} alt="" /><div>{item.name}</div></div>
+    })
     return (
         <StyledSidebar>
             <StyledList>
@@ -13,7 +21,13 @@ export const Sidebar = () => {
                 <li><NavLink to='dialogs'>Messages</NavLink></li>
                 <li><a >News</a></li>
                 <li><a >Music</a></li>
-                <li><a ></a></li>
+                <div >
+                    <h2>Frends</h2>
+                    <WrapperFrends >
+                        {frends}
+                    </WrapperFrends>
+                </div>
+
             </StyledList>
         </StyledSidebar>
     )
@@ -40,3 +54,13 @@ const StyledList = styled.ul`
  }
 `
 
+const Img = styled.img`
+width: 40px;
+border-radius: 50%;
+`
+const WrapperFrends = styled.div`
+display: flex;
+div{
+    margin-right: 5px;
+}
+`

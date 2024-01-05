@@ -1,21 +1,21 @@
 import styled from "styled-components"
-import { Container } from "../Container"
-import { NavLink } from "react-router-dom"
 import { Dialog, DialogPropsType } from "./Dialog"
 import { Message, MessagePropsType } from "./Message"
+import { postDialogsPropsType } from "../redux/State"
+
+
 
 
 type DialogsPropsType = {
-    dialogsData: Array<DialogPropsType>
-    postData: Array<MessagePropsType>
+    dialogs: postDialogsPropsType
 }
 
 
-export const Dialogs: React.FC<DialogsPropsType> = ({dialogsData, postData}) => {
-    let data = dialogsData.map(item => {
+export const Dialogs: React.FC<DialogsPropsType> = ({dialogs}) => {
+    let data = dialogs.dialogsData.map(item => {
         return <Dialog key={item.id} {...item} />
     })
-    let messages = postData.map(item => {
+    let messages = dialogs.postData.map(item => {
       return <Message key={item.id} message={item.message} id = {item.id}/>
     })
     return (
