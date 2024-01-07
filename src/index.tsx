@@ -3,16 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import { state } from './components/redux/State';
+import { getMessagePost, state } from './components/redux/State';
 
 
 
 
-
+export function mix(){
 
 ReactDOM.render(
   <BrowserRouter>
-    <App state = {state}/>
+    <App getMessagePost = {getMessagePost} state = {state}/>
   </BrowserRouter>,
   document.getElementById('root')
 );
+
+}
+
+mix()

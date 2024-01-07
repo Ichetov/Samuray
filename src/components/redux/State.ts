@@ -3,6 +3,7 @@ import { MessagePropsType } from '../dialogs/Message'
 import iconPost from './../../images/108261978.fe2e75d1.160x160o.40118e6a2177@2x.jpeg'
 import { PostType } from '../profile/posts/post/Post'
 import girl from './../../images/gerl.jpg'
+import { mix } from '../..'
 
 
 
@@ -56,9 +57,18 @@ export let state: statePropsType = {
 
     sidebar: {
         sidebarData: [
-            {name: 'Sveta', id: 1, photo: girl},
-            {name: 'Ivan', id: 2, photo: girl},
+            { name: 'Sveta', id: 1, photo: girl },
+            { name: 'Ivan', id: 2, photo: girl },
         ]
     }
 
 }
+
+
+
+export function getMessagePost(val: string) {
+    let newObj = { message: val, id: state.profile.postMessages.length + 1, likeCount: 4, icon: iconPost }
+    state = { ...state, profile: { ...state.profile, postMessages: [...state.profile.postMessages, newObj] } }
+    mix()
+}
+

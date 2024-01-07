@@ -9,9 +9,12 @@ export type MessagePropsType = {
 }
 
 
-export const Message: React.FC<MessagePropsType> = ({message}) => {
+export const Message: React.FC<MessagePropsType> = ({ message }) => {
 
     return (
+        <div>
             <div>{message}</div>
+        
+        </div>
     )
 }
