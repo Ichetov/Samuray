@@ -12,11 +12,12 @@ import { statePropsType } from './components/redux/State';
 
 type AppPropsType = {
 state: statePropsType
-getMessagePost: (val: string) => void
+addGetMessagePost: () => void
+changeText: (val: string) => void
 }
 
 
-function App({state, getMessagePost}: AppPropsType) {
+function App({state, addGetMessagePost,changeText}: AppPropsType) {
 
   return (
     <div className="App">
@@ -24,7 +25,7 @@ function App({state, getMessagePost}: AppPropsType) {
       <Sidebar sidebarData = {state.sidebar.sidebarData}/>
       <Wrapper>
         <Routes>
-          <Route path='/profile' element={<Profile getMessagePost = {getMessagePost} postMessages = {state.profile.postMessages}/>} />
+          <Route path='/profile' element={<Profile changeText = {changeText} addGetMessagePost = {addGetMessagePost} profile = {state.profile}/>} />
           <Route path='/dialogs/*' element={<Dialogs dialogs = {state.dialogs}/>} />
         </Routes>
       </Wrapper>
