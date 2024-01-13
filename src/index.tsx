@@ -3,20 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import { addGetMessagePost, changeText, subscribe, state } from './components/redux/State';
+import { statePropsType, store} from './components/redux/State';
 
 
-export const rernderEntireTree = () => {
+export const rernderEntireTree = (state: statePropsType) => {
 
 ReactDOM.render(
   <BrowserRouter>
-    <App changeText = {changeText} addGetMessagePost = {addGetMessagePost} state = {state}/>
+    <App changeText = {store.changeText.bind(store)} addGetMessagePost = {store.addGetMessagePost.bind(store)} state = {state}/>
   </BrowserRouter>,
   document.getElementById('root')
 );
 
 }
 
-subscribe(rernderEntireTree);
+store.subscribe(rernderEntireTree);
 
-rernderEntireTree()
+rernderEntireTree(store.getState())
