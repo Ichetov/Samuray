@@ -1,17 +1,16 @@
 import styled from "styled-components"
 
 import { Post, PostType } from "./post/Post"
-import { useRef } from "react"
-import { postMessagesPropsType } from "../../redux/State"
+import { ChangeEvent, ChangeEventHandler, useRef } from "react"
+import { actionPropsType, addPostAction, changePostAction, postMessagesPropsType } from "../../redux/State"
 
 
 type MyPostType = {
     profile: postMessagesPropsType
-    addGetMessagePost: () => void
-    changeText: (val: string) => void
+    dispatch: (action: actionPropsType) => void
 }
 
-export const MyPost: React.FC<MyPostType> = ({ profile, addGetMessagePost, changeText }) => {
+export const MyPost: React.FC<MyPostType> = ({ profile, dispatch}) => {
     const textRef = useRef<HTMLTextAreaElement>(null);
     let postArray = profile.postMessages.map(item => {
         return <Post key={item.id} icon={item.icon} message={item.message} likeCount={item.likeCount} id={item.id} />
@@ -21,7 +20,7 @@ export const MyPost: React.FC<MyPostType> = ({ profile, addGetMessagePost, chang
         // if (textRef.current && textRef.current.value.trim() !== '') {
         //     addGetMessagePost(textRef.current.value)
         // }
-        addGetMessagePost()
+        dispatch(addPostAction())
     }
 
     return (
@@ -29,7 +28,7 @@ export const MyPost: React.FC<MyPostType> = ({ profile, addGetMessagePost, chang
             <Header>My post</Header>
 
             <WrapperStyled>
-                <textarea value={profile.postInputText} onChange={(e) => changeText(e.currentTarget.value)} ref={textRef}></textarea>
+                <textarea value={profile.postInputText} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => dispatch(changePostAction(e.currentTarget.value))} ref={textRef}></textarea>
                 <div><button disabled={!profile.postInputText} onClick={() => addMessages()}>Add post</button></div>
             </WrapperStyled>
             {postArray}

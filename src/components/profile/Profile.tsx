@@ -4,19 +4,18 @@ import { Container } from "../Container"
 import { MyPost } from "./posts/MyPosts"
 import { ProfileInfo } from "./posts/profileInfo/ProfileInfo"
 import { PostType } from "./posts/post/Post"
-import { postMessagesPropsType } from "../redux/State"
+import { actionPropsType, postMessagesPropsType } from "../redux/State"
 
 type ProfilePropsType = {
     profile: postMessagesPropsType
-    addGetMessagePost: () => void
-    changeText: (val: string) => void
+    dispatch: (action: actionPropsType) => void
 }
 
-export const Profile: React.FC<ProfilePropsType> = ({profile, addGetMessagePost, changeText}) => {
+export const Profile: React.FC<ProfilePropsType> = ({profile, dispatch}) => {
     return (
         <StyledProfile>
             <ProfileInfo />
-            <MyPost changeText = {changeText} profile = {profile} addGetMessagePost = {addGetMessagePost}/>
+            <MyPost  profile = {profile} dispatch = {dispatch}/>
         </StyledProfile>
     )
 }

@@ -64,7 +64,11 @@ import girl from './../../images/gerl.jpg'
 // }
 
 
+const ADD_POST = 'ADD-POST';
+const CHANGE_TEXT = 'CHANGE-TEXT';
 
+const ADD_DIALOGS = 'ADD_DIALOGS';
+const CHANGE_TEXT_DIALOGS = 'CHANGE_TEXT_DIALOGS';
 
 
 export type sidebarObjPropsType = {
@@ -81,6 +85,7 @@ export type postMessagesPropsType = {
 export type postDialogsPropsType = {
     dialogsData: Array<DialogPropsType>
     postData: Array<MessagePropsType>
+    dialogsInputText: string
 }
 
 export type sidebarPropsType = {
@@ -94,6 +99,10 @@ export type statePropsType = {
     sidebar: sidebarPropsType
 }
 
+export type actionPropsType = {
+    type: string
+    value?: string
+}
 
 export type storePropsType = {
     _state: statePropsType
@@ -102,6 +111,10 @@ export type storePropsType = {
     getState: () => statePropsType
     _observerFunct: Function
     subscribe: Function
+    dispatch: (action: actionPropsType) => void
+    addDialogsMessage: () => void
+    addChangeTextMessage: (value: string) => void
+
 }
 
 
@@ -126,7 +139,8 @@ export const store: storePropsType = {
                 { message: 'Как дела', id: 1 },
                 { message: 'Когда занятия?', id: 2 },
                 { message: 'Кто знает отличие useEffect от useLayout?', id: 3 },
-            ]
+            ],
+            dialogsInputText: ''
         },
 
         sidebar: {
@@ -141,12 +155,35 @@ export const store: storePropsType = {
 
     },
 
-    subscribe(sub: ()=> void)  {
+    subscribe(sub: () => void) {
         this._observerFunct = sub
     },
 
     getState() {
         return this._state;
+    },
+
+
+
+    dispatch(action) {
+        if (action.type === 'ADD-POST') {
+            this.addGetMessagePost()
+        }
+        if (action.type === 'CHANGE-TEXT') {
+            if (action.value) {
+                this.changeText(action.value)
+            }
+
+        }
+        if (action.type === ADD_DIALOGS) {
+            this.addDialogsMessage()
+        }
+        if (action.type === CHANGE_TEXT_DIALOGS) {
+            if (action.value) {
+                this.addChangeTextMessage(action.value)
+            }
+
+        }
     },
 
     changeText(val: string) {
@@ -161,5 +198,69 @@ export const store: storePropsType = {
             this._observerFunct(this._state);
         }
 
+    },
+    addDialogsMessage() {
+        if (this._state.dialogs.dialogsInputText.trim() !== '') {
+            this._state = { ...this._state, dialogs: { ...this._state.dialogs, postData: [...this._state.dialogs.postData, { message: this._state.dialogs.dialogsInputText, id: this._state.dialogs.postData.length + 1 }] } }
+            this._state = {...this._state, dialogs:{...this._state.dialogs, dialogsInputText: ''}}
+            this._observerFunct(this._state);
+        }
+    },
+
+    addChangeTextMessage(value: string) {
+        this._state = { ...this._state, dialogs: { ...this._state.dialogs, dialogsInputText: value } }
+        this._observerFunct(this._state);
+    }
+
+}
+
+
+
+
+type AddMessagesActionCreatorType = {
+    type: typeof ADD_DIALOGS
+}
+
+export const addMessagesActionCreator = (): AddMessagesActionCreatorType => {
+    return {
+        type: ADD_DIALOGS
     }
 }
+
+type ChangeDialogsActionCreatorType = {
+    type: typeof CHANGE_TEXT_DIALOGS
+    value: string
+}
+
+
+export const changeDialogsActionCreator = (value: string): ChangeDialogsActionCreatorType => {
+    return {
+        type: CHANGE_TEXT_DIALOGS,
+        value
+    }
+}
+
+
+type AddPostActionType = {
+    type: typeof ADD_POST
+}
+
+export const addPostAction = (): AddPostActionType => {
+    return {
+        type: ADD_POST,
+    }
+}
+
+type ChangePostActionType = {
+    type: typeof CHANGE_TEXT
+    value: string
+}
+
+export const changePostAction = (value: string): ChangePostActionType => {
+    return {
+        type: CHANGE_TEXT,
+        value
+    }
+}
+
+

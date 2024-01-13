@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import { statePropsType, store} from './components/redux/State';
+import { addPostAction, statePropsType, store} from './components/redux/State';
 
 
 export const rernderEntireTree = (state: statePropsType) => {
 
 ReactDOM.render(
   <BrowserRouter>
-    <App changeText = {store.changeText.bind(store)} addGetMessagePost = {store.addGetMessagePost.bind(store)} state = {state}/>
+    <App dispatch = {store.dispatch.bind(store)} state = {state}/>
   </BrowserRouter>,
   document.getElementById('root')
 );

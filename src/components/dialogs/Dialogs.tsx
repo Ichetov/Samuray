@@ -1,18 +1,19 @@
 import styled from "styled-components"
 import { Dialog, DialogPropsType } from "./Dialog"
 import { Message, MessagePropsType } from "./Message"
-import { postDialogsPropsType } from "../redux/State"
-import { useRef } from "react"
+import { addMessagesActionCreator, postDialogsPropsType,changeDialogsActionCreator, actionPropsType } from "../redux/State"
+import { ChangeEvent, useRef } from "react"
 
 
 
 
 type DialogsPropsType = {
     dialogs: postDialogsPropsType
+    dispatch: (action: actionPropsType) => void
 }
 
 
-export const Dialogs: React.FC<DialogsPropsType> = ({ dialogs }) => {
+export const Dialogs: React.FC<DialogsPropsType> = ({ dialogs, dispatch }) => {
     const TextRef = useRef<HTMLTextAreaElement>(null);
     
     let data = dialogs.dialogsData.map(item => {
@@ -21,6 +22,15 @@ export const Dialogs: React.FC<DialogsPropsType> = ({ dialogs }) => {
     let messages = dialogs.postData.map(item => {
         return <Message key={item.id} message={item.message} id={item.id} />
     })
+
+      function addMessagesHeandler(){
+       dispatch(addMessagesActionCreator())
+      }
+
+      function changeTextareaHandler(e: ChangeEvent<HTMLTextAreaElement>){
+        dispatch(changeDialogsActionCreator(e.currentTarget.value))
+      }
+
     return (
         <StyledMessages>
             <Wrapper>
@@ -30,10 +40,10 @@ export const Dialogs: React.FC<DialogsPropsType> = ({ dialogs }) => {
                 <MessagesItem>
                     {messages}
                 </MessagesItem>
-
+          
             </Wrapper>
-            <div><textarea ref = {TextRef}></textarea></div>
-            <button>Добавить</button>
+            <div><textarea onChange={changeTextareaHandler} value = {dialogs.dialogsInputText} ref = {TextRef}></textarea></div>
+            <button disabled = {!dialogs.dialogsInputText} onClick={addMessagesHeandler}>Добавить</button>
         </StyledMessages>
     )
 }

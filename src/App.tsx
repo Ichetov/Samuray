@@ -6,18 +6,17 @@ import { Profile } from './components/profile/Profile';
 import { Dialogs } from './components/dialogs/Dialogs';
 import { Wrapper } from './Wrapper';
 import { Route, Routes } from 'react-router-dom';
-import { statePropsType } from './components/redux/State';
+import { actionPropsType, statePropsType } from './components/redux/State';
 
 
 
 type AppPropsType = {
 state: statePropsType
-addGetMessagePost: () => void
-changeText: (val: string) => void
+dispatch: (action: actionPropsType) => void
 }
 
 
-function App({state, addGetMessagePost,changeText}: AppPropsType) {
+function App({state, dispatch}: AppPropsType) {
 
   return (
     <div className="App">
@@ -25,8 +24,8 @@ function App({state, addGetMessagePost,changeText}: AppPropsType) {
       <Sidebar sidebarData = {state.sidebar.sidebarData}/>
       <Wrapper>
         <Routes>
-          <Route path='/profile' element={<Profile changeText = {changeText} addGetMessagePost = {addGetMessagePost} profile = {state.profile}/>} />
-          <Route path='/dialogs/*' element={<Dialogs dialogs = {state.dialogs}/>} />
+          <Route path='/profile' element={<Profile dispatch = {dispatch} profile = {state.profile}/>} />
+          <Route path='/dialogs/*' element={<Dialogs dispatch = {dispatch} dialogs = {state.dialogs}/>} />
         </Routes>
       </Wrapper>
       {/* <Footer/> */}
