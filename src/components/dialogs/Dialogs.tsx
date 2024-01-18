@@ -1,9 +1,9 @@
 import styled from "styled-components"
 import { Dialog, DialogPropsType } from "./Dialog"
 import { Message, MessagePropsType } from "./Message"
-import { addMessagesActionCreator, postDialogsPropsType,changeDialogsActionCreator, actionPropsType } from "../redux/State"
+import { actionPropsType } from "../redux/State"
 import { ChangeEvent, useRef } from "react"
-
+import { addMessagesActionCreator, changeDialogsActionCreator, postDialogsPropsType } from "../redux/dialogs-reducer"
 
 
 
@@ -15,7 +15,7 @@ type DialogsPropsType = {
 
 export const Dialogs: React.FC<DialogsPropsType> = ({ dialogs, dispatch }) => {
     const TextRef = useRef<HTMLTextAreaElement>(null);
-    
+
     let data = dialogs.dialogsData.map(item => {
         return <Dialog key={item.id} {...item} />
     })
@@ -23,13 +23,13 @@ export const Dialogs: React.FC<DialogsPropsType> = ({ dialogs, dispatch }) => {
         return <Message key={item.id} message={item.message} id={item.id} />
     })
 
-      function addMessagesHeandler(){
-       dispatch(addMessagesActionCreator())
-      }
+    function addMessagesHeandler() {
+        dispatch(addMessagesActionCreator())
+    }
 
-      function changeTextareaHandler(e: ChangeEvent<HTMLTextAreaElement>){
+    function changeTextareaHandler(e: ChangeEvent<HTMLTextAreaElement>) {
         dispatch(changeDialogsActionCreator(e.currentTarget.value))
-      }
+    }
 
     return (
         <StyledMessages>
@@ -40,10 +40,10 @@ export const Dialogs: React.FC<DialogsPropsType> = ({ dialogs, dispatch }) => {
                 <MessagesItem>
                     {messages}
                 </MessagesItem>
-          
+
             </Wrapper>
-            <div><textarea onChange={changeTextareaHandler} value = {dialogs.dialogsInputText} ref = {TextRef}></textarea></div>
-            <button disabled = {!dialogs.dialogsInputText} onClick={addMessagesHeandler}>Добавить</button>
+            <div><textarea onChange={changeTextareaHandler} value={dialogs.dialogsInputText} ref={TextRef}></textarea></div>
+            <button disabled={!dialogs.dialogsInputText} onClick={addMessagesHeandler}>Добавить</button>
         </StyledMessages>
     )
 }

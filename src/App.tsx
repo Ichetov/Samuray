@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Header } from './components/header/Header';
 import { Sidebar } from './components/sidebar/Sidebar';
@@ -17,6 +17,8 @@ dispatch: (action: actionPropsType) => void
 
 
 function App({state, dispatch}: AppPropsType) {
+
+
 
   return (
     <div className="App">
