@@ -20,19 +20,25 @@ export type AddPostActionType = {
     type: typeof ADD_POST
 }
 
-export type ProfileActions = ChangePostActionType | AddPostActionType
+export type ProfileActions = ChangePostActionType | AddPostActionType;
+
+let initialState: postMessagesPropsType = {
+    postMessages: [
+        { message: 'Hello how are you?', likeCount: 10, icon: iconPost, id: 1 },
+        { message: 'Did you go', likeCount: 6, icon: iconPost, id: 2 },
+        { message: 'Did you drink wine?', likeCount: 57, icon: iconPost, id: 3 }
+    ],
+    postInputText: ''
+}
 
 
-export const profileReducer = (state: postMessagesPropsType, action: ProfileActions) => {
+export const profileReducer = (state = initialState, action: ProfileActions): postMessagesPropsType => {
 
     switch (action.type) {
         case ADD_POST:
-            state = { ...state, postMessages: [...state.postMessages, { message: state.postInputText, id: state.postMessages.length + 1, likeCount: 4, icon: iconPost }] }
-            state = { ...state, postInputText: '' }
-            return state
+            return {...state, postMessages: [...state.postMessages, { message: state.postInputText, id: state.postMessages.length + 1, likeCount: 4, icon: iconPost }] ,postInputText: ''}
         case CHANGE_TEXT:
-            state = { ...state, postInputText: action.value }
-            return state
+            return {...state, postInputText: action.value}
         default:
             return state;
     }

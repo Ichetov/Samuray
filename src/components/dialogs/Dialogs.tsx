@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { Dialog, DialogPropsType } from "./Dialog"
 import { Message, MessagePropsType } from "./Message"
-import { actionPropsType } from "../redux/State"
+import { actionPropsType } from "../redux/Store"
 import { ChangeEvent, useRef } from "react"
 import { addMessagesActionCreator, changeDialogsActionCreator, postDialogsPropsType } from "../redux/dialogs-reducer"
 

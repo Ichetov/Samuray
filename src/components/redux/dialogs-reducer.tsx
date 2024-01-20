@@ -1,29 +1,43 @@
 import { DialogPropsType } from "../dialogs/Dialog"
 import { MessagePropsType } from "../dialogs/Message"
-import { actionPropsType } from "./State"
+import { actionPropsType } from "./Store"
 
 
+export type postDialogsPropsType = {
+    dialogsData: Array<DialogPropsType>
+    postData: Array<MessagePropsType>
+    dialogsInputText: string
+}
+
+let initialState: postDialogsPropsType = {
+    dialogsData: [
+        { name: 'Андрей', id: 1 },
+        { name: 'Иван', id: 2 },
+        { name: 'Михаил', id: 3 },
+    ],
+
+    postData: [
+        { message: 'Как дела', id: 1 },
+        { message: 'Когда занятия?', id: 2 },
+        { message: 'Кто знает отличие useEffect от useLayout?', id: 3 },
+    ],
+    dialogsInputText: ''
+}
 
 
-
-export const dialogsReducer = (state: postDialogsPropsType, action: DialogsType) => {
+export const dialogsReducer = (state = initialState, action: DialogsType): postDialogsPropsType => {
 
     switch (action.type) {
         case ADD_DIALOGS:
-            state = { ...state, postData: [...state.postData, { message: state.dialogsInputText, id: state.postData.length + 1 }] }
-            state = { ...state, dialogsInputText: '' }
-            return state
-            break;
+            return {...state, postData: [...state.postData, { message: state.dialogsInputText, id: state.postData.length + 1 }] ,dialogsInputText: ''}
         case CHANGE_TEXT_DIALOGS:
-            state = { ...state, dialogsInputText: action.value }
-            return state
+            return {...state, dialogsInputText: action.value}
         default:
             return state
     }
 
 
 }
-
 
 
 export type AddMessagesActionCreatorType = {
@@ -51,11 +65,7 @@ export const changeDialogsActionCreator = (value: string): ChangeDialogsActionCr
     }
 }
 
-export type postDialogsPropsType = {
-    dialogsData: Array<DialogPropsType>
-    postData: Array<MessagePropsType>
-    dialogsInputText: string
-}
+
 
 export const ADD_DIALOGS = 'ADD_DIALOGS';
 export const CHANGE_TEXT_DIALOGS = 'CHANGE_TEXT_DIALOGS';

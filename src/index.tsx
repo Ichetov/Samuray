@@ -1,13 +1,11 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import { addPostAction, statePropsType, store} from './components/redux/State';
+import { AppRootreducer, store } from './components/redux/redux-store';
 
 
-export const rernderEntireTree = (state: statePropsType) => {
-
+export const rernderEntireTree = (state: AppRootreducer) => {
 ReactDOM.render(
   <BrowserRouter>
     <App dispatch = {store.dispatch.bind(store)} state = {state}/>
@@ -17,6 +15,12 @@ ReactDOM.render(
 
 }
 
-store.subscribe(rernderEntireTree);
-
 rernderEntireTree(store.getState())
+
+
+store.subscribe(()=>{
+  rernderEntireTree(store.getState())
+})
+
+
+

@@ -2,7 +2,7 @@ import styled, { css } from "styled-components"
 
 import { Post, PostType } from "./post/Post"
 import { ChangeEvent, ChangeEventHandler, useRef, useState } from "react"
-import { actionPropsType, addPostAction, changePostAction } from "../../redux/State"
+import { actionPropsType, addPostAction, changePostAction } from "../../redux/Store"
 import { change } from "redux-form"
 import { postMessagesPropsType } from "../../redux/profile-reducer"
 

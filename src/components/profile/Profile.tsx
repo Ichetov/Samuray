@@ -4,7 +4,7 @@ import { Container } from "../Container"
 import { MyPost } from "./posts/MyPosts"
 import { ProfileInfo } from "./posts/profileInfo/ProfileInfo"
 import { PostType } from "./posts/post/Post"
-import { actionPropsType} from "../redux/State"
+import { actionPropsType} from "../redux/Store"
 import { postMessagesPropsType } from "../redux/profile-reducer"
 
 type ProfilePropsType = {

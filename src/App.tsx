@@ -6,7 +6,7 @@ import { Profile } from './components/profile/Profile';
 import { Dialogs } from './components/dialogs/Dialogs';
 import { Wrapper } from './Wrapper';
 import { Route, Routes } from 'react-router-dom';
-import { actionPropsType, statePropsType } from './components/redux/State';
+import { actionPropsType, statePropsType } from './components/redux/Store';
 
 
 
