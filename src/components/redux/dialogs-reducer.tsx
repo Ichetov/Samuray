@@ -29,7 +29,7 @@ export const dialogsReducer = (state = initialState, action: DialogsType): postD
 
     switch (action.type) {
         case ADD_DIALOGS:
-            return {...state, postData: [...state.postData, { message: state.dialogsInputText, id: state.postData.length + 1 }] ,dialogsInputText: ''}
+            return {...state, postData: [...state.postData, { message: action.value, id: state.postData.length + 1 }] ,dialogsInputText: ''}
         case CHANGE_TEXT_DIALOGS:
             return {...state, dialogsInputText: action.value}
         default:
@@ -42,11 +42,13 @@ export const dialogsReducer = (state = initialState, action: DialogsType): postD
 
 export type AddMessagesActionCreatorType = {
     type: typeof ADD_DIALOGS
+    value: string
 }
 
-export const addMessagesActionCreator = (): AddMessagesActionCreatorType => {
+export const addMessagesActionCreator = (value: string): AddMessagesActionCreatorType => {
     return {
-        type: ADD_DIALOGS
+        type: ADD_DIALOGS,
+        value
     }
 }
 

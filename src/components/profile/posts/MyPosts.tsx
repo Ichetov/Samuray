@@ -1,39 +1,45 @@
 import styled, { css } from "styled-components"
-
-import { Post, PostType } from "./post/Post"
-import { ChangeEvent, ChangeEventHandler, useRef, useState } from "react"
-import { actionPropsType, addPostAction, changePostAction } from "../../redux/Store"
-import { change } from "redux-form"
+import { Post } from "./post/Post"
+import { ChangeEvent,useRef, useState } from "react"
 import { postMessagesPropsType } from "../../redux/profile-reducer"
 
 
 type MyPostType = {
     profile: postMessagesPropsType
-    dispatch: (action: actionPropsType) => void
+    addPost: (value: string) => void
+    setState: (value: { textValue: string }) => void
+    value: string
 }
 
-export const MyPost: React.FC<MyPostType> = ({ profile, dispatch }) => {
+export const MyPost: React.FC<MyPostType> = ({ profile, addPost, setState, value }) => {
 
     let [error, setError] = useState<string | null>(null);
 
-    const textRef = useRef<HTMLTextAreaElement>(null);
+    const textRef = useRef<HTMLInputElement>(null);
     let postArray = profile.postMessages.map(item => {
         return <Post key={item.id} icon={item.icon} message={item.message} likeCount={item.likeCount} id={item.id} />
     })
 
     function addMessagesHandler() {
 
-        if (profile.postInputText.trim()) {
-            dispatch(addPostAction())
+        if (value.trim()) {
+            addPost(value)
+            setState({ textValue: '' })
         } else {
             setError('error')
         }
 
     }
 
-    function changeTextareaTextHandler(e: ChangeEvent<HTMLTextAreaElement>) {
-        dispatch(changePostAction(e.currentTarget.value))
+    function changeTextareaTextHandler(e: ChangeEvent<HTMLInputElement>) {
+        setState({ textValue: e.currentTarget.value })
         setError(null)
+    }
+
+    function addMessages(e: React.KeyboardEvent<HTMLInputElement>){
+         if(e.key === 'Enter'){
+            addMessagesHandler();
+         }
     }
 
     return (
@@ -41,9 +47,10 @@ export const MyPost: React.FC<MyPostType> = ({ profile, dispatch }) => {
             <Header>My post</Header>
 
             <WrapperStyled>
-                <TextAreaStyled $error={error} value={profile.postInputText} onChange={changeTextareaTextHandler} ref={textRef}></TextAreaStyled>
+
+                <TextAreaStyled onKeyDown={addMessages} $error={error} value={value} onChange={changeTextareaTextHandler} ref={textRef} />
                 {error && <div>Сообщение не должно состоять только из пробелов!</div>}
-                <div><button disabled={!profile.postInputText} onClick={() => addMessagesHandler()}>Add post</button></div>
+                <div><button disabled={!value} onClick={() => addMessagesHandler()}>Add post</button></div>
             </WrapperStyled>
             {postArray}
         </StyledMyPost>
@@ -60,7 +67,7 @@ const Header = styled.h2`
   text-align: center;
 `
 
-const TextAreaStyled = styled.textarea<{ $error: string | null }>`
+const TextAreaStyled = styled.input<{ $error: string | null }>`
 border: 1px solid black;
 ${({ $error }) => $error && css<{ $error: string | null }>`
  border: 1px solid red;

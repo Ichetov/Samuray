@@ -1,22 +1,29 @@
-import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Header } from './components/header/Header';
 import { Sidebar } from './components/sidebar/Sidebar';
-import { Profile } from './components/profile/Profile';
-import { Dialogs } from './components/dialogs/Dialogs';
+import { ProfileConteiner } from './components/profile/Profile';
+import { Dialogs, DialogsConteiner } from './components/dialogs/Dialogs';
 import { Wrapper } from './Wrapper';
 import { Route, Routes } from 'react-router-dom';
-import { actionPropsType, statePropsType } from './components/redux/Store';
+
+import { AppRootreducer } from './components/redux/redux-store';
+import { AddPostActionType, ChangePostActionType } from './components/redux/profile-reducer';
+import { AddMessagesActionCreatorType, ChangeDialogsActionCreatorType } from './components/redux/dialogs-reducer';
 
 
-
+export type storeType = {
+  getState: ()=> AppRootreducer
+  dispatch: (action: actionPropsType)=> void
+}
+export type actionPropsType = ChangePostActionType | AddPostActionType | ChangeDialogsActionCreatorType | AddMessagesActionCreatorType;
 type AppPropsType = {
-state: statePropsType
+state: AppRootreducer
 dispatch: (action: actionPropsType) => void
+store: storeType
 }
 
 
-function App({state, dispatch}: AppPropsType) {
+function App({state, dispatch, store}: AppPropsType) {
 
 
 
@@ -26,8 +33,8 @@ function App({state, dispatch}: AppPropsType) {
       <Sidebar sidebarData = {state.sidebar.sidebarData}/>
       <Wrapper>
         <Routes>
-          <Route path='/profile' element={<Profile dispatch = {dispatch} profile = {state.profile}/>} />
-          <Route path='/dialogs/*' element={<Dialogs dispatch = {dispatch} dialogs = {state.dialogs}/>} />
+          <Route path='/profile' element={<ProfileConteiner store = {store}/>} />
+          <Route path='/dialogs/*' element={<DialogsConteiner store = {store}/>} />
         </Routes>
       </Wrapper>
       {/* <Footer/> */}

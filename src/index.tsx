@@ -8,7 +8,7 @@ import { AppRootreducer, store } from './components/redux/redux-store';
 export const rernderEntireTree = (state: AppRootreducer) => {
 ReactDOM.render(
   <BrowserRouter>
-    <App dispatch = {store.dispatch.bind(store)} state = {state}/>
+    <App dispatch = {store.dispatch.bind(store)} state = {state} store = {store}/>
   </BrowserRouter>,
   document.getElementById('root')
 );

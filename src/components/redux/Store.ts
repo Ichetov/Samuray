@@ -123,19 +123,19 @@ export const store: storePropsType = {
 
 
 
-export const addPostAction = (): AddPostActionType => {
-    return {
-        type: ADD_POST,
-    }
-}
+// export const addPostAction = (): AddPostActionType => {
+//     return {
+//         type: ADD_POST,
+//     }
+// }
 
 
-export const changePostAction = (value: string): ChangePostActionType => {
-    return {
-        type: CHANGE_TEXT,
-        value
-    }
-}
+// export const changePostAction = (value: string): ChangePostActionType => {
+//     return {
+//         type: CHANGE_TEXT,
+//         value
+//     }
+// }
 
 
 

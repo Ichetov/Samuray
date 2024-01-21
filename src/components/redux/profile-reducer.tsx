@@ -1,6 +1,20 @@
 import { PostType } from "../profile/posts/post/Post";
 import iconPost from './../../images/108261978.fe2e75d1.160x160o.40118e6a2177@2x.jpeg'
 
+export const addPostAction = (value: string): AddPostActionType => {
+    return {
+        type: ADD_POST,
+        value
+    }
+}
+
+
+export const changePostAction = (value: string): ChangePostActionType => {
+    return {
+        type: CHANGE_TEXT,
+        value
+    }
+}
 
 
 export const ADD_POST = 'ADD-POST';
@@ -18,6 +32,7 @@ export type ChangePostActionType = {
 
 export type AddPostActionType = {
     type: typeof ADD_POST
+    value: string
 }
 
 export type ProfileActions = ChangePostActionType | AddPostActionType;
@@ -36,7 +51,7 @@ export const profileReducer = (state = initialState, action: ProfileActions): po
 
     switch (action.type) {
         case ADD_POST:
-            return {...state, postMessages: [...state.postMessages, { message: state.postInputText, id: state.postMessages.length + 1, likeCount: 4, icon: iconPost }] ,postInputText: ''}
+            return {...state, postMessages: [...state.postMessages, { message: action.value, id: state.postMessages.length + 1, likeCount: 4, icon: iconPost }] ,postInputText: ''}
         case CHANGE_TEXT:
             return {...state, postInputText: action.value}
         default:
