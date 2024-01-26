@@ -5,6 +5,7 @@ import { actionPropsType } from "../redux/Store"
 import React, { ChangeEvent, ChangeEventHandler, InputHTMLAttributes, KeyboardEventHandler, useRef, useState } from "react"
 import { addMessagesActionCreator, changeDialogsActionCreator, postDialogsPropsType } from "../redux/dialogs-reducer"
 import { storeType } from "../../App"
+import StoreContext from "../../StoreContext"
 
 
 
@@ -41,8 +42,8 @@ export const Dialogs: React.FC<DialogsPropsType> = ({ dialogs, addMessage }) => 
         setError(null)
     }
 
-    function onKeyDownHandler(e: React.KeyboardEvent<HTMLInputElement>){
-        if(e.key === 'Enter'){
+    function onKeyDownHandler(e: React.KeyboardEvent<HTMLInputElement>) {
+        if (e.key === 'Enter') {
             addMessagesHeandler()
         }
     }
@@ -91,17 +92,18 @@ type DialogPropsType = {
     store: storeType
 }
 
-export class DialogsConteiner extends React.Component<DialogPropsType> {
+export class DialogsConteiner extends React.Component {
 
 
+    static contextType = StoreContext;
     render() {
-
+        let store = this.context;
         const addMessage = (value: string) => {
-            this.props.store.dispatch(addMessagesActionCreator(value))
+            store.dispatch(addMessagesActionCreator(value))
         }
 
         return (
-            <Dialogs addMessage={addMessage} dialogs={this.props.store.getState().dialogs} />
+            <Dialogs addMessage={addMessage} dialogs={store.getState().dialogs} />
         )
     }
 

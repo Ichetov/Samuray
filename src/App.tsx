@@ -23,18 +23,18 @@ store: storeType
 }
 
 
-function App({state, dispatch, store}: AppPropsType) {
+function App() {
 
 
 
   return (
     <div className="App">
       <Header />
-      <Sidebar sidebarData = {state.sidebar.sidebarData}/>
+      <Sidebar/>
       <Wrapper>
         <Routes>
-          <Route path='/profile' element={<ProfileConteiner store = {store}/>} />
-          <Route path='/dialogs/*' element={<DialogsConteiner store = {store}/>} />
+          <Route path='/profile' element={<ProfileConteiner/>} />
+          <Route path='/dialogs/*' element={<DialogsConteiner/>} />
         </Routes>
       </Wrapper>
       {/* <Footer/> */}

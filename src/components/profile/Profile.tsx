@@ -1,27 +1,25 @@
 import styled from "styled-components"
 
-import { Container } from "../Container"
 import { MyPost } from "./posts/MyPosts"
 import { ProfileInfo } from "./posts/profileInfo/ProfileInfo"
-import { PostType } from "./posts/post/Post"
-import { actionPropsType,  storePropsType } from "../redux/Store"
 import { addPostAction, postMessagesPropsType } from "../redux/profile-reducer"
 import React from "react"
 import { storeType } from "../../App"
+import StoreContext from "../../StoreContext"
 
 
 type ProfilePropsType = {
     profile: postMessagesPropsType
     addPost: (value: string) => void
-    setState: (value: {textValue: string}) => void
+    setState: (value: { textValue: string }) => void
     value: string
 }
 
-export const Profile: React.FC<ProfilePropsType> = ({ profile, addPost, value,  setState }) => {
+export const Profile: React.FC<ProfilePropsType> = ({ profile, addPost, value, setState }) => {
     return (
         <StyledProfile>
             <ProfileInfo />
-            <MyPost  setState = { setState} value = {value} profile={profile} addPost={addPost} />
+            <MyPost setState={setState} value={value} profile={profile} addPost={addPost} />
         </StyledProfile>
     )
 }
@@ -31,8 +29,6 @@ const StyledProfile = styled.section`
 `
 
 type ProfileConteinerType = {
-    // profile: postMessagesPropsType
-    // dispatch: (action: actionPropsType) => void
     store: storeType
 }
 
@@ -41,24 +37,26 @@ type StateType = {
 }
 
 
-export class ProfileConteiner extends React.Component<ProfileConteinerType> {
+export class ProfileConteiner extends React.Component {
 
     state: StateType = {
         textValue: '',
     }
 
+    static contextType = StoreContext;
 
     render(): React.ReactNode {
+        let value = this.context;
 
         const addPost = (val: string) => {
-            this.props.store.dispatch(addPostAction(val))
+            value.dispatch(addPostAction(val))
         }
 
 
         return (
-            <div>
-                <Profile value = {this.state.textValue} setState={this.setState.bind(this)} addPost={addPost} profile={this.props.store.getState().profile} />
-            </div>
+      
+                    <Profile value={this.state.textValue} setState={this.setState.bind(this)} addPost={addPost} profile={value.getState().profile} />
+          
         )
     }
 
