@@ -1,5 +1,4 @@
-import { DialogPropsType } from '../dialogs/Dialog'
-import { MessagePropsType } from '../dialogs/Message'
+
 import girl from './../../images/gerl.jpg'
 import { ADD_POST, AddPostActionType, CHANGE_TEXT, ChangePostActionType, ProfileActions, postMessagesPropsType, profileReducer } from './profile-reducer';
 import iconPost from './../../images/108261978.fe2e75d1.160x160o.40118e6a2177@2x.jpeg'

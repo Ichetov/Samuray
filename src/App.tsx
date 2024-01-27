@@ -24,9 +24,6 @@ store: storeType
 
 
 function App() {
-
-
-
   return (
     <div className="App">
       <Header />

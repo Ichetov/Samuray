@@ -5,32 +5,47 @@ import { actionPropsType } from "../redux/Store"
 import React, { ChangeEvent, ChangeEventHandler, InputHTMLAttributes, KeyboardEventHandler, useRef, useState } from "react"
 import { addMessagesActionCreator, changeDialogsActionCreator, postDialogsPropsType } from "../redux/dialogs-reducer"
 import { storeType } from "../../App"
-import StoreContext from "../../StoreContext"
+import { connect } from "react-redux"
+import { AppRootreducer } from "../redux/redux-store"
 
+type PostDataType = {
+    message: string
+    id: number
+}
 
+type DialogsDataType = {
+    name: string
+    id: number
+}
+
+type DialogsType = {
+
+}
 
 type DialogsPropsType = {
-    dialogs: postDialogsPropsType
+    // postData: PostDataType[]
     addMessage: (value: string) => void
+    // dialogsData: DialogsDataType[]
+     dialogs: postDialogsPropsType
 }
 
 
-export const Dialogs: React.FC<DialogsPropsType> = ({ dialogs, addMessage }) => {
+export const Dialogs: React.FC<DialogsPropsType> = ({ dialogs, addMessage}) => {
 
     const [textValue, setTextValue] = useState<string>('')
     const [error, setError] = useState<string | null>(null)
 
-    let data = dialogs.dialogsData.map(item => {
+    let data =  dialogs.dialogsData.map(item => {
         return <Dialog key={item.id} {...item} />
     })
-    let messages = dialogs.postData.map(item => {
+    let messages =  dialogs.postData.map(item => {
         return <Message key={item.id} message={item.message} id={item.id} />
     })
 
     function addMessagesHeandler() {
         if (textValue.trim()) {
-            addMessage(textValue);
-            setTextValue('')
+            addMessage(textValue)
+        
         } else {
             setError('error')
         }
@@ -92,19 +107,40 @@ type DialogPropsType = {
     store: storeType
 }
 
-export class DialogsConteiner extends React.Component {
+// export class DialogsConteiner extends React.Component {
 
 
-    static contextType = StoreContext;
-    render() {
-        let store = this.context;
-        const addMessage = (value: string) => {
-            store.dispatch(addMessagesActionCreator(value))
-        }
+//     static contextType = StoreContext;
+//     render() {
 
-        return (
-            <Dialogs addMessage={addMessage} dialogs={store.getState().dialogs} />
-        )
+//         let value = this.context;
+//         const addMessage = (val: string) => {
+//             value.dispatch(addMessagesActionCreator(val))
+//         }
+
+//         return (
+//             <Dialogs addMessage={addMessage} dialogs={value.getState().dialogs} />
+//         )
+//     }
+
+// }
+
+const mapStateToProps = (state: AppRootreducer) => {
+    return {
+        dialogs: state.dialogs
+        // postData: state.dialogs.postData,
+        // dialogsData: state.dialogs.dialogsData
     }
-
 }
+
+
+const mapDispatchToProps = (dispatch: (action: actionPropsType) => void) => {
+    return {
+        addMessage(val: string) {
+            dispatch(addMessagesActionCreator(val))
+        }
+    }
+}
+
+
+export let DialogsConteiner = connect(mapStateToProps, mapDispatchToProps)(Dialogs)

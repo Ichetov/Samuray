@@ -6,20 +6,21 @@ import { addPostAction, postMessagesPropsType } from "../redux/profile-reducer"
 import React from "react"
 import { storeType } from "../../App"
 import StoreContext from "../../StoreContext"
+import { connect } from "react-redux"
+import { AppRootreducer } from "../redux/redux-store"
+import { actionPropsType } from "../redux/Store"
 
 
 type ProfilePropsType = {
     profile: postMessagesPropsType
     addPost: (value: string) => void
-    setState: (value: { textValue: string }) => void
-    value: string
 }
 
-export const Profile: React.FC<ProfilePropsType> = ({ profile, addPost, value, setState }) => {
+export const Profile: React.FC<ProfilePropsType> = ({ profile, addPost }) => {
     return (
         <StyledProfile>
             <ProfileInfo />
-            <MyPost setState={setState} value={value} profile={profile} addPost={addPost} />
+            <MyPost  profile={profile} addPost={addPost} />
         </StyledProfile>
     )
 }
@@ -37,29 +38,46 @@ type StateType = {
 }
 
 
-export class ProfileConteiner extends React.Component {
+// export class ProfileConteiner extends React.Component {
 
-    state: StateType = {
-        textValue: '',
+//     state: StateType = {
+//         textValue: '',
+//     }
+
+
+
+//     render(): React.ReactNode {
+
+
+//         const addPost = (val: string) => {
+//             value.dispatch(addPostAction(val))
+//         }
+
+
+//         return (
+
+//             <Profile setState={this.setState.bind(this)} value={this.state.textValue} addPost={addPost} profile={value.getState().profile} />
+
+//         )
+//     }
+
+
+// }
+
+let mapStateToProps = (state: AppRootreducer) => {
+    return {
+      profile: state.profile
     }
-
-    static contextType = StoreContext;
-
-    render(): React.ReactNode {
-        let value = this.context;
-
-        const addPost = (val: string) => {
-            value.dispatch(addPostAction(val))
-        }
-
-
-        return (
-      
-                    <Profile value={this.state.textValue} setState={this.setState.bind(this)} addPost={addPost} profile={value.getState().profile} />
-          
-        )
-    }
-
-
 }
+
+let mapDispatchToProps = (dispatch: (action: actionPropsType) => void) => {
+    return {
+      addPost(val: string){
+        dispatch(addPostAction(val))
+      }
+    }
+}
+
+
+export let ProfileConteiner = connect(mapStateToProps, mapDispatchToProps)(Profile)
 

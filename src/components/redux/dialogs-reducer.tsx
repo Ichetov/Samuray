@@ -1,6 +1,6 @@
 import { DialogPropsType } from "../dialogs/Dialog"
 import { MessagePropsType } from "../dialogs/Message"
-import { actionPropsType } from "./Store"
+
 
 
 export type postDialogsPropsType = {
@@ -28,10 +28,12 @@ let initialState: postDialogsPropsType = {
 export const dialogsReducer = (state = initialState, action: DialogsType): postDialogsPropsType => {
 
     switch (action.type) {
-        case ADD_DIALOGS:
-            return {...state, postData: [...state.postData, { message: action.value, id: state.postData.length + 1 }] ,dialogsInputText: ''}
+        case ADD_DIALOGS:          
+            // return { ...state, postData: [...state.postData, { message: action.value, id: state.postData.length + 1 }], dialogsInputText: '' }
+             state.postData.push({ message: action.value, id: state.postData.length + 1 })
+            return { ...state}
         case CHANGE_TEXT_DIALOGS:
-            return {...state, dialogsInputText: action.value}
+            return { ...state, dialogsInputText: action.value }
         default:
             return state
     }
