@@ -29,9 +29,7 @@ export const dialogsReducer = (state = initialState, action: DialogsType): postD
 
     switch (action.type) {
         case ADD_DIALOGS:          
-            // return { ...state, postData: [...state.postData, { message: action.value, id: state.postData.length + 1 }], dialogsInputText: '' }
-             state.postData.push({ message: action.value, id: state.postData.length + 1 })
-            return { ...state}
+            return { ...state, postData: [...state.postData, { message: action.value, id: state.postData.length + 1 }], dialogsInputText: '' }
         case CHANGE_TEXT_DIALOGS:
             return { ...state, dialogsInputText: action.value }
         default:

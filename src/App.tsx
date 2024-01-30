@@ -9,17 +9,18 @@ import { Route, Routes } from 'react-router-dom';
 import { AppRootreducer } from './components/redux/redux-store';
 import { AddPostActionType, ChangePostActionType } from './components/redux/profile-reducer';
 import { AddMessagesActionCreatorType, ChangeDialogsActionCreatorType } from './components/redux/dialogs-reducer';
+import { UsersContainer } from './components/users/UsersContainer';
 
 
 export type storeType = {
-  getState: ()=> AppRootreducer
-  dispatch: (action: actionPropsType)=> void
+  getState: () => AppRootreducer
+  dispatch: (action: actionPropsType) => void
 }
 export type actionPropsType = ChangePostActionType | AddPostActionType | ChangeDialogsActionCreatorType | AddMessagesActionCreatorType;
 type AppPropsType = {
-state: AppRootreducer
-dispatch: (action: actionPropsType) => void
-store: storeType
+  state: AppRootreducer
+  dispatch: (action: actionPropsType) => void
+  store: storeType
 }
 
 
@@ -27,11 +28,12 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <Sidebar/>
+      <Sidebar />
       <Wrapper>
         <Routes>
-          <Route path='/profile' element={<ProfileConteiner/>} />
-          <Route path='/dialogs/*' element={<DialogsConteiner/>} />
+          <Route path='/profile' element={<ProfileConteiner />} />
+          <Route path='/dialogs/*' element={<DialogsConteiner />} />
+          <Route path='/users' element={<UsersContainer />} />
         </Routes>
       </Wrapper>
       {/* <Footer/> */}

@@ -23,6 +23,7 @@ export const Sidebar: React.FC = () => {
                         isActive ? "active" : ""}
                         to='/profile' >Profile</NavLink></li>
                     <li><NavLink to='dialogs'>Messages</NavLink></li>
+                    <li><NavLink to='users'>Users</NavLink></li>
                     <li><a >News</a></li>
                     <li><a >Music</a></li>
                     <div >

@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 
 
 
-export const rernderEntireTree = (state: AppRootreducer) => {
+
 
   ReactDOM.render(
     <BrowserRouter>
@@ -20,9 +20,9 @@ export const rernderEntireTree = (state: AppRootreducer) => {
     document.getElementById('root')
   );
 
-}
 
-rernderEntireTree(store.getState())
+
+
 
 
 // store.subscribe(() => {

@@ -23,28 +23,29 @@ type DialogsType = {
 }
 
 type DialogsPropsType = {
-    // postData: PostDataType[]
+    postData: PostDataType[]
     addMessage: (value: string) => void
-    // dialogsData: DialogsDataType[]
-     dialogs: postDialogsPropsType
+    dialogsData: DialogsDataType[]
+    //  dialogs: postDialogsPropsType
 }
 
 
-export const Dialogs: React.FC<DialogsPropsType> = ({ dialogs, addMessage}) => {
+export const Dialogs: React.FC<DialogsPropsType> = ({ dialogsData, addMessage,postData}) => {
 
     const [textValue, setTextValue] = useState<string>('')
     const [error, setError] = useState<string | null>(null)
 
-    let data =  dialogs.dialogsData.map(item => {
+    let data =  dialogsData.map(item => {
         return <Dialog key={item.id} {...item} />
     })
-    let messages =  dialogs.postData.map(item => {
+    let messages =  postData.map(item => {
         return <Message key={item.id} message={item.message} id={item.id} />
     })
 
     function addMessagesHeandler() {
         if (textValue.trim()) {
             addMessage(textValue)
+            setTextValue('')
         
         } else {
             setError('error')
@@ -127,9 +128,9 @@ type DialogPropsType = {
 
 const mapStateToProps = (state: AppRootreducer) => {
     return {
-        dialogs: state.dialogs
-        // postData: state.dialogs.postData,
-        // dialogsData: state.dialogs.dialogsData
+        // dialogs: state.dialogs
+        postData: state.dialogs.postData,
+        dialogsData: state.dialogs.dialogsData
     }
 }
 
