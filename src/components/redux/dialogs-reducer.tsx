@@ -28,10 +28,8 @@ let initialState: postDialogsPropsType = {
 export const dialogsReducer = (state = initialState, action: DialogsType): postDialogsPropsType => {
 
     switch (action.type) {
-        case ADD_DIALOGS:          
+        case ADD_DIALOGS:
             return { ...state, postData: [...state.postData, { message: action.value, id: state.postData.length + 1 }], dialogsInputText: '' }
-        case CHANGE_TEXT_DIALOGS:
-            return { ...state, dialogsInputText: action.value }
         default:
             return state
     }

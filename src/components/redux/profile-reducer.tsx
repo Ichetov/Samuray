@@ -47,7 +47,7 @@ let initialState: postMessagesPropsType = {
 }
 
 
-export const profileReducer = (state = initialState, action: ProfileActions): postMessagesPropsType => {
+export const profileReducer = (state: postMessagesPropsType = initialState, action: ProfileActions): postMessagesPropsType => {
 
     switch (action.type) {
         case ADD_POST:
