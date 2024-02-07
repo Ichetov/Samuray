@@ -5,7 +5,6 @@ import { ProfileConteiner } from './components/profile/Profile';
 import { Dialogs, DialogsConteiner } from './components/dialogs/Dialogs';
 import { Wrapper } from './Wrapper';
 import { Route, Routes } from 'react-router-dom';
-
 import { AppRootreducer } from './components/redux/redux-store';
 import { AddPostActionType, ChangePostActionType } from './components/redux/profile-reducer';
 import { AddMessagesActionCreatorType, ChangeDialogsActionCreatorType } from './components/redux/dialogs-reducer';
