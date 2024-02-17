@@ -19,6 +19,7 @@ export const changePostAction = (value: string): ChangePostActionType => {
 
 export const ADD_POST = 'ADD-POST';
 export const CHANGE_TEXT = 'CHANGE-TEXT';
+export const CHANGE_LOAD = 'CHANGE-LOAD';
 
 export type postMessagesPropsType = {
     postMessages: Array<PostType>
@@ -33,6 +34,7 @@ export type ChangePostActionType = {
 export type AddPostActionType = {
     type: typeof ADD_POST
     value: string
+
 }
 
 export type ProfileActions = ChangePostActionType | AddPostActionType;
@@ -43,7 +45,7 @@ let initialState: postMessagesPropsType = {
         { message: 'Did you go', likeCount: 6, icon: iconPost, id: 2 },
         { message: 'Did you drink wine?', likeCount: 57, icon: iconPost, id: 3 }
     ],
-    postInputText: ''
+    postInputText: '',
 }
 
 
@@ -51,9 +53,9 @@ export const profileReducer = (state: postMessagesPropsType = initialState, acti
 
     switch (action.type) {
         case ADD_POST:
-            return {...state, postMessages: [...state.postMessages, { message: action.value, id: state.postMessages.length + 1, likeCount: 4, icon: iconPost }] ,postInputText: ''}
+            return { ...state, postMessages: [...state.postMessages, { message: action.value, id: state.postMessages.length + 1, likeCount: 4, icon: iconPost }], postInputText: '' }
         case CHANGE_TEXT:
-            return {...state, postInputText: action.value}
+            return { ...state, postInputText: action.value }
         default:
             return state;
     }
