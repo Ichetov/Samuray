@@ -1,9 +1,8 @@
 import styled, { css } from "styled-components"
 import { Dialog } from "./Dialog"
 import { Message, MessagePropsType } from "./Message"
-import { actionPropsType } from "../redux/Store"
 import React, { ChangeEvent, ChangeEventHandler, InputHTMLAttributes, KeyboardEventHandler, useRef, useState } from "react"
-import { addMessagesActionCreator, changeDialogsActionCreator, postDialogsPropsType } from "../redux/dialogs-reducer"
+import { addMessage, changeDialogsActionCreator, postDialogsPropsType } from "../redux/dialogs-reducer"
 import { storeType } from "../../App"
 import { connect } from "react-redux"
 import { AppRootreducer } from "../redux/redux-store"
@@ -18,19 +17,25 @@ type DialogsDataType = {
     id: number
 }
 
-type DialogsType = {
 
-}
-
-type DialogsPropsType = {
-    postData: PostDataType[]
-    addMessage: (value: string) => void
+type MapStateToPropsType = {
+    postData: MessagePropsType[]
     dialogsData: DialogsDataType[]
-    //  dialogs: postDialogsPropsType
 }
 
 
-export const Dialogs: React.FC<DialogsPropsType> = ({ dialogsData, addMessage,postData}) => {
+type MapDispatchToPropsType = {
+    addMessage: (value: string) => void
+}
+
+type OwnPropsType = {
+
+}
+
+type DialogsConteinerType = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType
+
+
+export const Dialogs: React.FC<DialogsConteinerType> = ({ dialogsData, addMessage,postData}) => {
 
     const [textValue, setTextValue] = useState<string>('')
     const [error, setError] = useState<string | null>(null)
@@ -108,25 +113,8 @@ type DialogPropsType = {
     store: storeType
 }
 
-// export class DialogsConteiner extends React.Component {
 
-
-//     static contextType = StoreContext;
-//     render() {
-
-//         let value = this.context;
-//         const addMessage = (val: string) => {
-//             value.dispatch(addMessagesActionCreator(val))
-//         }
-
-//         return (
-//             <Dialogs addMessage={addMessage} dialogs={value.getState().dialogs} />
-//         )
-//     }
-
-// }
-
-const mapStateToProps = (state: AppRootreducer) => {
+const mapStateToProps = (state: AppRootreducer): MapStateToPropsType => {
     return {
         // dialogs: state.dialogs
         postData: state.dialogs.postData,
@@ -134,14 +122,4 @@ const mapStateToProps = (state: AppRootreducer) => {
     }
 }
 
-
-const mapDispatchToProps = (dispatch: (action: actionPropsType) => void) => {
-    return {
-        addMessage(val: string) {
-            dispatch(addMessagesActionCreator(val))
-        }
-    }
-}
-
-
-export let DialogsConteiner = connect(mapStateToProps, mapDispatchToProps)(Dialogs)
+export let DialogsConteiner = connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppRootreducer>(mapStateToProps, {addMessage})(Dialogs)

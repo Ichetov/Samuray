@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom"
 import styled from "styled-components"
 import { Container } from "../Container"
-import { sidebarObjPropsType } from "../redux/Store"
 import StoreContext from "../../StoreContext"
 import { storeType } from "../../App"
 

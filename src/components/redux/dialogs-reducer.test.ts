@@ -1,4 +1,4 @@
-import { addMessagesActionCreator, dialogsReducer, postDialogsPropsType } from "./dialogs-reducer"
+import {addMessage, dialogsReducer, postDialogsPropsType } from "./dialogs-reducer"
 
 
 
@@ -21,7 +21,7 @@ test('adding dialogs', () => {
     }
 
 
-    let endState = dialogsReducer(initialState, addMessagesActionCreator('Hi'));
+    let endState = dialogsReducer(initialState, addMessage('Hi'));
 
     expect(endState.postData.length).toBe(4)
     expect(endState.postData[3].message).toBe('Hi')
@@ -49,7 +49,7 @@ test('adding dialogs', () => {
     }
 
 
-    let endState = dialogsReducer(initialState, addMessagesActionCreator('Hi'));
+    let endState = dialogsReducer(initialState, addMessage('Hi'));
 
     expect(endState.postData.length).toBe(4)
     expect(endState.postData[3].message).toBe('Hi')

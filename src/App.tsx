@@ -1,5 +1,5 @@
 import './App.css';
-import { Header } from './components/header/Header';
+import HeaderCont from './components/header/Header';
 import { Sidebar } from './components/sidebar/Sidebar';
 import { ProfileConteiner } from './components/profile/Profile';
 import { Dialogs, DialogsConteiner } from './components/dialogs/Dialogs';
@@ -26,11 +26,11 @@ type AppPropsType = {
 function App() {
   return (
     <div className="App">
-      <Header />
+      <HeaderCont />
       <Sidebar />
       <Wrapper>
         <Routes>
-          <Route path='/profile' element={<ProfileConteiner />} />
+          <Route path='/profile/:id?' element={<ProfileConteiner />} />
           <Route path='/dialogs/*' element={<DialogsConteiner />} />
           <Route path='/users' element={<UsersContainer />} />
         </Routes>

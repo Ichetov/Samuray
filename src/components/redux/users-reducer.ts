@@ -1,7 +1,6 @@
 import ava from './../../images/x2097369-1271064885.png'
 
 
-
 type PhotosType = {
    small: string | null
    large: string | null
@@ -68,7 +67,7 @@ type ChanheIsLoadingType = {
 }
 
 
-export const chanheIsLoading = (isValue: boolean): ChanheIsLoadingType => {
+export const changeIsLoad = (isValue: boolean): ChanheIsLoadingType => {
    return {
       type: 'CHANGE-ISLOAD',
       isValue
@@ -82,7 +81,7 @@ export type changeIsDoneType = {
    id: number
 }
 
-export const changeIsDoneAC = (value: boolean, id: number): changeIsDoneType => {
+export const changeIsDone = (value: boolean, id: number): changeIsDoneType => {
    return {
       type: 'CHANGE-ISDONE',
       value,
@@ -97,7 +96,7 @@ type setUsersType = {
 
 
 
-export const setUsersAC = (users: DataStateType[]): setUsersType => {
+export const setUsers = (users: DataStateType[]): setUsersType => {
    return {
       type: 'SET-USERS',
       users
@@ -111,7 +110,7 @@ export type setCountType = {
 }
 
 
-export const setCountAC = (count: number): setCountType => {
+export const setCount = (count: number): setCountType => {
    return {
       type: 'SET-COUNT',
       count
@@ -124,7 +123,7 @@ export type setCurrentPageType = {
 }
 
 
-export const setCurrentPageAC = (id: number): setCurrentPageType => {
+export const setCurrentPage = (id: number): setCurrentPageType => {
    return {
       type: 'SET-CURRENT',
       id

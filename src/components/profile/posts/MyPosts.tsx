@@ -1,12 +1,13 @@
 import styled, { css } from "styled-components"
 import { Post } from "./post/Post"
 import { ChangeEvent, useRef, useState } from "react"
-import { postMessagesPropsType } from "../../redux/profile-reducer"
+import { UserType, postMessagesPropsType } from "../../redux/profile-reducer"
 
 
 type MyPostType = {
     profile: postMessagesPropsType
     addPost: (value: string) => void
+    
 }
 
 export const MyPost: React.FC<MyPostType> = ({profile, addPost}) => {
@@ -44,6 +45,7 @@ export const MyPost: React.FC<MyPostType> = ({profile, addPost}) => {
 
     return (
         <StyledMyPost>
+           
             <Header>My post</Header>
 
             <WrapperStyled>

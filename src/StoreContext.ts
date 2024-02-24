@@ -1,6 +1,6 @@
 import React from "react";
 import { storeType } from "./App";
-import { store } from "./components/redux/Store";
+
 
 
 

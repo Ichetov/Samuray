@@ -43,7 +43,7 @@ export type AddMessagesActionCreatorType = {
     value: string
 }
 
-export const addMessagesActionCreator = (value: string): AddMessagesActionCreatorType => {
+export const addMessage = (value: string): AddMessagesActionCreatorType => {
     return {
         type: ADD_DIALOGS,
         value
