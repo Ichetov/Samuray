@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { DataStateType } from "../redux/users-reducer";
 import img from './../../images/x2097369-1271064885.png';
 import styled, { css } from "styled-components";
@@ -9,6 +8,7 @@ export type UsersType = {
     changeIsDone: (value: boolean, id: number) => void
     users: DataStateType[]
     totalCount: number
+    disablArray: number[]
     setCurrentPage: (id: number) => void
     currentPage: number
     changeUnFollow: (id: number) => void
@@ -16,20 +16,22 @@ export type UsersType = {
 }
 
 
-export const Users = ({ changeFollow, users, changeUnFollow, totalCount, setCurrentPage, currentPage }: UsersType) => {
+export const Users = ({ disablArray, changeFollow, users, changeUnFollow, totalCount, setCurrentPage, currentPage }: UsersType) => {
+
+   
+
+        let allUsers = users.map(it => {
+             let isDisabled = disablArray.includes(it.id)
+            return <div key={it.id} style={{ marginTop: '15px' }}>
+                <Link to={`/profile/${it.id}`}><img style={{ width: '60px' }} src={it.photos.small || img} /></Link>
+                <div>{it.name}</div>
+                {/* <button onClick={() => changeIsValue(it.id)}>{it.followed ? 'Unfollow' : 'Follow'}</button> */}
+                {it.followed ? <button disabled = {isDisabled} onClick={() => changeUnFollow(it.id)}>Unfollow</button> : <button disabled = {isDisabled} onClick={() => changeFollow(it.id)}>Follow</button>}
 
 
-    let allUsers = users.map(it => {
-        return <div key={it.id} style={{ marginTop: '15px' }}>
-            <Link to={`/profile/${it.id}`} onClick={() => { }}><img style={{ width: '60px' }} src={it.photos.small || img} /></Link>
-            <div>{it.name}</div>
-            {/* <button onClick={() => changeIsValue(it.id)}>{it.followed ? 'Unfollow' : 'Follow'}</button> */}
-            {it.followed ? <button onClick={()=> changeUnFollow(it.id)}>Unfollow</button> : <button onClick={()=> changeFollow(it.id)}>Follow</button>}
 
-
-
-        </div>
-    })
+            </div>
+        })
 
     let m = [];
     let z = Math.ceil(totalCount / 5);

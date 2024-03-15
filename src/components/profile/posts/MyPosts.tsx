@@ -52,7 +52,7 @@ export const MyPost: React.FC<MyPostType> = ({profile, addPost}) => {
 
                 <TextAreaStyled onKeyDown={addMessages} $error={error} value={text} onChange={changeTextareaTextHandler} ref={textRef} />
                 {error && <div>Сообщение не должно состоять только из пробелов!</div>}
-                <div><button disabled={!text} onClick={() => addMessagesHandler()}>Add post</button></div>
+                <div><button disabled={!text || !!error} onClick={() => addMessagesHandler()}>Add post</button></div>
             </WrapperStyled>
             {postArray}
         </StyledMyPost>

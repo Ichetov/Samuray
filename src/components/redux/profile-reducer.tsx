@@ -1,3 +1,4 @@
+import { addUsersAp } from "../../api/api";
 import { PostType } from "../profile/posts/post/Post";
 import iconPost from './../../images/108261978.fe2e75d1.160x160o.40118e6a2177@2x.jpeg';
 
@@ -20,6 +21,7 @@ export const ADD_POST = 'ADD-POST';
 export const CHANGE_TEXT = 'CHANGE-TEXT';
 export const CHANGE_LOAD = 'CHANGE-LOAD';
 export const ADD_USER = 'ADD-USER';
+export const CHANGE_ID = 'CHANGE_ID'
 
 export type postMessagesPropsType = {
     postMessages: Array<PostType>
@@ -52,8 +54,8 @@ export type ContactsType = {
 }
 
 export type PhotosType = {
-        small: string
-        large: string
+    small: string
+    large: string
 
 }
 
@@ -80,7 +82,7 @@ export const addUser = (user: UserType): AddUserType => {
     }
 }
 
-export type ProfileActions = ChangePostActionType | AddPostActionType | AddUserType;
+export type ProfileActions = ChangePostActionType | AddPostActionType | AddUserType | changeUserIdType;
 
 let initialState: postMessagesPropsType = {
     postMessages: [
@@ -93,6 +95,19 @@ let initialState: postMessagesPropsType = {
     user: null
 }
 
+type changeUserIdType = {
+    type: typeof CHANGE_ID
+    id: number
+}
+
+export const changeUserId = (id: number) => {
+    console.log(id)
+    return {
+        type: CHANGE_ID,
+        id
+    }
+}
+
 
 export const profileReducer = (state: postMessagesPropsType = initialState, action: ProfileActions): postMessagesPropsType => {
 
@@ -102,7 +117,11 @@ export const profileReducer = (state: postMessagesPropsType = initialState, acti
         case CHANGE_TEXT:
             return { ...state, postInputText: action.value }
         case ADD_USER:
-            return {...state, user: action.user}
+            return { ...state, user: action.user }
+        case CHANGE_ID:
+            return {
+                ...state, userId: action.id
+            }
         default:
             return state;
     }
@@ -110,3 +129,12 @@ export const profileReducer = (state: postMessagesPropsType = initialState, acti
 
 }
 
+
+export const addUserTh = (params: number) => {
+    return (dispatch: any) => {
+        addUsersAp(params)
+            .then((val) => {
+                dispatch(addUser(val.data))
+            })
+    }
+}

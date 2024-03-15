@@ -1,3 +1,5 @@
+import { changeFoll, changeUnFoll } from './../../api/api';
+import { getUsers } from '../../api/api';
 import ava from './../../images/x2097369-1271064885.png'
 
 
@@ -5,6 +7,9 @@ type PhotosType = {
    small: string | null
    large: string | null
 }
+
+
+const TOGGLE_FOLLOWING = 'TOGGLE-FOLLOWING';
 
 export type DataStateType = {
    name: string
@@ -20,6 +25,7 @@ export type initialStateType = {
    totalCount: number
    currentPage: number
    isLoading: boolean
+   disablArray: number[]
 }
 
 let initialState: initialStateType = {
@@ -27,6 +33,7 @@ let initialState: initialStateType = {
    totalCount: 0,
    currentPage: 1,
    isLoading: false,
+   disablArray: []
 }
 
 
@@ -55,10 +62,51 @@ export const usersReduser = (state: initialStateType = initialState, action: any
          return {
             ...state, isLoading: action.isValue
          }
+      case TOGGLE_FOLLOWING:
+         return {
+            ...state, disablArray: action.isFetch ? [...state.disablArray, action.id] : state.disablArray.filter(it => it !== action.id)
+         }
+      // case DEL_DISABLE:
+      //    return {
+      //       ...state,  disablArray: state.disablArray.filter(it=> it!== action.val)
+      //    }
       default:
          return state
    }
 }
+
+
+// type AddDisableType = {
+//    type: typeof ADD_DISABLE
+//    val: number
+// }
+
+
+// export const addDisable = (val: number): AddDisableType => {
+//    return {
+//       type: ADD_DISABLE,
+//       val
+//    }
+// }
+
+
+
+
+type ToggleFollowingType = {
+   type: typeof TOGGLE_FOLLOWING
+   id: number
+   isFetch: boolean
+}
+
+
+export const toggleFollowing = (id: number, isFetch: boolean): ToggleFollowingType => {
+   return {
+      type: TOGGLE_FOLLOWING,
+      id,
+      isFetch
+   }
+}
+
 
 
 type ChanheIsLoadingType = {
@@ -130,3 +178,46 @@ export const setCurrentPage = (id: number): setCurrentPageType => {
    }
 }
 
+
+
+export const getUsersThunk = (currentPage: number) => {
+   return (dispatch: any) => {
+      dispatch(changeIsLoad(true))
+      getUsers(currentPage)
+         .then(data => {
+            dispatch(setUsers(data.items))
+            dispatch(setCount(data.totalCount))
+            dispatch(changeIsLoad(false))
+
+         })
+   }
+}
+
+
+export const changeFollTh = (id: number) => {
+   return (dispatch: any) => {
+      dispatch(toggleFollowing(id, true))
+      changeFoll(id)
+         .then(val => {
+            dispatch(toggleFollowing(id, false))
+            if (val === 0) {
+               dispatch(changeIsDone(true, id))
+            }
+         })
+   }
+}
+
+
+
+export const changeUnFollowTh = (id: number) => {
+   return (dispatch: any) => {
+     dispatch(toggleFollowing(id, true))
+      changeUnFoll(id)
+         .then(val => {
+            dispatch(toggleFollowing(id, false))
+            if (val === 0) {
+               dispatch(changeIsDone(false, id))
+            }
+         })
+   }
+}

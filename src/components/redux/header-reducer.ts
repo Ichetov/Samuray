@@ -1,3 +1,4 @@
+import { getProfile, me } from "../../api/api";
 import { UserType } from "./profile-reducer";
 
 
@@ -87,5 +88,23 @@ export const addProfile = (profile: UserType): AddDataType => {
     return {
         type: ADD_PROFILE,
         profile
+    }
+}
+
+
+export const authMe = () => {
+    return (dispatch: any) => {
+        me()
+            .then(values => {
+                if (values.resultCode === 0) {
+                    dispatch(addData(values.data));
+                    dispatch(changeIsAuth(true));
+                    getProfile(values.data.id)
+                        .then(val => {
+                            dispatch(addProfile(val.data))
+                        })
+                }
+
+            })
     }
 }

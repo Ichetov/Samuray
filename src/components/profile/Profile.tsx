@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { MyPost } from "./posts/MyPosts"
 import { ProfileInfo } from "./posts/profileInfo/ProfileInfo"
-import { UserType, addPostAction, postMessagesPropsType, addUser } from "../redux/profile-reducer"
+import { UserType, addPostAction, postMessagesPropsType, addUser, changeUserId, addUserTh } from "../redux/profile-reducer"
 import React from "react"
 import { storeType } from "../../App"
 import StoreContext from "../../StoreContext"
@@ -9,16 +9,21 @@ import { connect } from "react-redux"
 import { AppRootreducer } from "../redux/redux-store"
 import { useParams } from "react-router-dom"
 import axios from "axios"
+import { redirect, withRouter } from "../../helper/helper"
+import { compose } from "redux"
 
 
 type MapStateToPropsType = {
     profile: postMessagesPropsType
     user: UserType | null
+    userId: number
 }
 
 type MapDispatchToPropsType = {
     addPostAction: (value: string) => void
-    addUser: (user: UserType)=> void
+    addUser: (user: UserType) => void
+    changeUserId: (id: number) => void
+    addUserTh: (params: number) => void
 }
 type OwnPropsType = {
 
@@ -31,17 +36,17 @@ type OwnPropsClassType = {
 
 type ProfilType = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType
 
-const ProfileFc = (props: ProfilType) => {
+// const ProfileFc = (props: ProfilType) => {
 
-    let params = useParams();
-    let num = params.id;
-    
-    if(Object.keys(params).length === 0){
-        num  = '24630'
-    }
+//     let params = useParams();
+//     let num = params.id;
 
-    return <Profile {...props} params={num} />
-}
+//     if (Object.keys(params).length === 0) {
+//         num = '24630'
+//     }
+
+//     return <Profile {...props} params={num} />
+// }
 
 
 type ProfileClassType = MapStateToPropsType & MapDispatchToPropsType & OwnPropsClassType
@@ -50,17 +55,14 @@ export class Profile extends React.Component<ProfileClassType> {
 
 
     componentDidMount(): void {
-     axios('https://social-network.samuraijs.com/api/1.0/profile/'+this.props.params)
-     .then((val)=> {
-        this.props.addUser(val.data)
-     })
+        this.props.addUserTh(this.props.params)
     }
 
     render() {
         return (
             <StyledProfile>
-                <ProfileInfo user = {this.props.user} />
-                <MyPost  profile={this.props.profile} addPost={this.props.addPostAction} />
+                <ProfileInfo user={this.props.user} />
+                <MyPost profile={this.props.profile} addPost={this.props.addPostAction} />
             </StyledProfile >
         )
 
@@ -83,7 +85,8 @@ type StateType = {
 let mapStateToProps = (state: AppRootreducer): MapStateToPropsType => {
     return {
         profile: state.profile,
-        user: state.profile.user
+        user: state.profile.user,
+        userId: state.profile.userId
     }
 }
 
@@ -96,5 +99,26 @@ let mapStateToProps = (state: AppRootreducer): MapStateToPropsType => {
 // }
 
 
-export let ProfileConteiner = connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppRootreducer>(mapStateToProps, { addPostAction, addUser })(ProfileFc)
 
+
+export let ProfileConteiner = compose(
+    withRouter,
+    connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppRootreducer>(mapStateToProps, {
+        addPostAction,
+        addUser, changeUserId, addUserTh
+    }),
+    redirect,
+)(Profile)
+
+
+// export let ProfileConteiner = connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppRootreducer>(mapStateToProps, {
+//     addPostAction,
+//     addUser, changeUserId, addUserTh
+// })(WrapperComponent)
+
+
+
+// export default compose(
+//     connect(mapStateToProps, { addPostAction, addUser, changeUserId, addUserTh }),
+//     redirect
+// )(ProfileConteiner);

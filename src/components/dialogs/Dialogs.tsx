@@ -6,11 +6,10 @@ import { addMessage, changeDialogsActionCreator, postDialogsPropsType } from "..
 import { storeType } from "../../App"
 import { connect } from "react-redux"
 import { AppRootreducer } from "../redux/redux-store"
+import { Navigate } from "react-router-dom"
+import { redirect } from "../../helper/helper"
+import { compose } from "redux"
 
-type PostDataType = {
-    message: string
-    id: number
-}
 
 type DialogsDataType = {
     name: string
@@ -21,6 +20,7 @@ type DialogsDataType = {
 type MapStateToPropsType = {
     postData: MessagePropsType[]
     dialogsData: DialogsDataType[]
+    isAuth: boolean
 }
 
 
@@ -35,15 +35,17 @@ type OwnPropsType = {
 type DialogsConteinerType = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType
 
 
-export const Dialogs: React.FC<DialogsConteinerType> = ({ dialogsData, addMessage,postData}) => {
+export const Dialogs: React.FC<DialogsConteinerType> = ({ isAuth, dialogsData, addMessage, postData }) => {
+
+
 
     const [textValue, setTextValue] = useState<string>('')
     const [error, setError] = useState<string | null>(null)
 
-    let data =  dialogsData.map(item => {
+    let data = dialogsData.map(item => {
         return <Dialog key={item.id} {...item} />
     })
-    let messages =  postData.map(item => {
+    let messages = postData.map(item => {
         return <Message key={item.id} message={item.message} id={item.id} />
     })
 
@@ -51,7 +53,7 @@ export const Dialogs: React.FC<DialogsConteinerType> = ({ dialogsData, addMessag
         if (textValue.trim()) {
             addMessage(textValue)
             setTextValue('')
-        
+
         } else {
             setError('error')
         }
@@ -69,8 +71,10 @@ export const Dialogs: React.FC<DialogsConteinerType> = ({ dialogsData, addMessag
         }
     }
 
+
     return (
         <StyledMessages>
+
             <Wrapper>
                 <MessagesName>
                     {data}
@@ -118,8 +122,15 @@ const mapStateToProps = (state: AppRootreducer): MapStateToPropsType => {
     return {
         // dialogs: state.dialogs
         postData: state.dialogs.postData,
-        dialogsData: state.dialogs.dialogsData
+        dialogsData: state.dialogs.dialogsData,
+        isAuth: state.header.isAuth
     }
 }
 
-export let DialogsConteiner = connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppRootreducer>(mapStateToProps, {addMessage})(Dialogs)
+
+export let DialogsConteiner = compose(
+    redirect,
+    connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppRootreducer>(mapStateToProps, { addMessage }),
+)(Dialogs)
+
+// export let DialogsConteiner = redirect(connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppRootreducer>(mapStateToProps, { addMessage })(Dialogs))

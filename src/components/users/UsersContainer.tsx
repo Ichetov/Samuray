@@ -2,9 +2,9 @@ import React from "react";
 import { Users, UsersType } from "./Users";
 import { connect } from "react-redux";
 import { AppRootreducer } from "../redux/redux-store";
-import { DataStateType, changeIsDone, changeIsLoad, setCount, setCurrentPage, setUsers } from "../redux/users-reducer";
-import axios from "axios";
+import { DataStateType, changeFollTh, changeIsDone, changeIsLoad, changeUnFollowTh, getUsersThunk, setCount, setCurrentPage, setUsers, toggleFollowing } from "../redux/users-reducer";
 import { Preloader } from "../../Preloader";
+import { changeFoll, changeUnFoll, getUsers } from "../../api/api";
 
 
 // type UsersClassContainerType = {
@@ -24,6 +24,7 @@ type MapStateToPropsType = {
     totalCount: number
     currentPage: number
     isLoading: boolean
+    disablArray: number[]
 }
 
 type MapDispatchToPropsType = {
@@ -32,6 +33,10 @@ type MapDispatchToPropsType = {
     setCount: (count: number) => void
     setCurrentPage: (id: number) => void
     changeIsLoad: (value: boolean) => void
+    toggleFollowing: (id: number, isFetch: boolean) => void
+    getUsersThunk: (count: number) => void
+    changeFollTh: (id: number)=> void
+    changeUnFollowTh:(id: number)=> void
 }
 
 type OwnPropsType = {
@@ -42,69 +47,33 @@ type UsersClassContainerType = MapStateToPropsType & MapDispatchToPropsType & Ow
 
 
 class UsersClassContainer extends React.Component<UsersClassContainerType> {
-    componentDidMount(): void {
-        this.props.changeIsLoad(true)
-        axios(`https://social-network.samuraijs.com/api/1.0/users?count=5&page=${this.props.currentPage}`,{
-            withCredentials: true,
-        })
-            .then(response => {
-                this.props.setUsers(response.data.items)
-                this.props.setCount(response.data.totalCount)
-                this.props.changeIsLoad(false)
 
-            })
+
+    componentDidMount(): void {
+        this.props.getUsersThunk(this.props.currentPage)
     }
 
     componentDidUpdate(prevProps: UsersClassContainerType) {
-
         if (prevProps.currentPage !== this.props.currentPage) {
-            this.props.changeIsLoad(true)
-            axios(`https://social-network.samuraijs.com/api/1.0/users?count=5&page=${this.props.currentPage}`,{
-                withCredentials: true,
-            })
-                .then(response => {
-                    this.props.setUsers(response.data.items)
-                    this.props.changeIsLoad(false)
-                })
+            this.props.getUsersThunk(this.props.currentPage)
         }
     }
 
 
     changeFollow = (id: number) => {
-        axios.post('https://social-network.samuraijs.com/api/1.0/follow/' + id, {}, {
-            withCredentials: true,
-            headers: {
-                'API-KEY': '2ecd69fe-2a50-42a6-8b92-395794495cfe'
-            }
-        })
-            .then(val => {
-                if (val.data.resultCode === 0) {
-                    this.props.changeIsDone(true, id)
-                }
-            })
+        this.props.changeFollTh(id)
 
     }
 
     changeUnFollow = (id: number) => {
-        axios.delete('https://social-network.samuraijs.com/api/1.0/follow/' + id, {
-            withCredentials: true,
-            headers: {
-                'API-KEY': '2ecd69fe-2a50-42a6-8b92-395794495cfe'
-            }
-        })
-            .then(val => {
-                if (val.data.resultCode === 0) {
-                    this.props.changeIsDone(false, id)
-                }
-            })
-
+        this.props.changeUnFollowTh(id)
     }
 
     render() {
 
         return (
             <div>
-                {this.props.isLoading ? <Preloader /> : <Users changeUnFollow={this.changeUnFollow} changeFollow={this.changeFollow} currentPage={this.props.currentPage} setCurrentPage={this.props.setCurrentPage} totalCount={this.props.totalCount} users={this.props.users} changeIsDone={this.props.changeIsDone} />}
+                {this.props.isLoading ? <Preloader /> : <Users disablArray={this.props.disablArray} changeUnFollow={this.changeUnFollow} changeFollow={this.changeFollow} currentPage={this.props.currentPage} setCurrentPage={this.props.setCurrentPage} totalCount={this.props.totalCount} users={this.props.users} changeIsDone={this.props.changeIsDone} />}
             </div>
         )
     }
@@ -116,12 +85,11 @@ function mapStateToProps(state: AppRootreducer): MapStateToPropsType {
         users: state.users.users,
         totalCount: state.users.totalCount,
         currentPage: state.users.currentPage,
-        isLoading: state.users.isLoading
+        isLoading: state.users.isLoading,
+        disablArray: state.users.disablArray
 
     }
 }
-
-
 
 
 // function mapDispatchToProps(dispatch: (action: any) => void) {
@@ -144,4 +112,7 @@ function mapStateToProps(state: AppRootreducer): MapStateToPropsType {
 //     }
 // }
 
-export let UsersContainer = connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppRootreducer>(mapStateToProps, { changeIsDone, setUsers, setCount, setCurrentPage, changeIsLoad })(UsersClassContainer)
+export let UsersContainer = connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppRootreducer>(mapStateToProps, {
+    changeIsDone, setUsers, setCount, setCurrentPage, changeIsLoad, toggleFollowing,
+    getUsersThunk, changeFollTh,changeUnFollowTh
+})(UsersClassContainer)

@@ -4,11 +4,12 @@ import { Sidebar } from './components/sidebar/Sidebar';
 import { ProfileConteiner } from './components/profile/Profile';
 import { Dialogs, DialogsConteiner } from './components/dialogs/Dialogs';
 import { Wrapper } from './Wrapper';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import { AppRootreducer } from './components/redux/redux-store';
 import { AddPostActionType, ChangePostActionType } from './components/redux/profile-reducer';
 import { AddMessagesActionCreatorType, ChangeDialogsActionCreatorType } from './components/redux/dialogs-reducer';
 import { UsersContainer } from './components/users/UsersContainer';
+import { Login } from './components/header/Login';
 
 
 export type storeType = {
@@ -29,11 +30,7 @@ function App() {
       <HeaderCont />
       <Sidebar />
       <Wrapper>
-        <Routes>
-          <Route path='/profile/:id?' element={<ProfileConteiner />} />
-          <Route path='/dialogs/*' element={<DialogsConteiner />} />
-          <Route path='/users' element={<UsersContainer />} />
-        </Routes>
+        <Outlet />
       </Wrapper>
       {/* <Footer/> */}
     </div>
