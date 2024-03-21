@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { MyPost } from "./posts/MyPosts"
 import { ProfileInfo } from "./posts/profileInfo/ProfileInfo"
-import { UserType, addPostAction, postMessagesPropsType, addUser, changeUserId, addUserTh } from "../redux/profile-reducer"
+import { UserType, addPostAction, postMessagesPropsType, addUser, changeUserId, addUserTh, addStatusAC, changeUserTh, changeStatusAC } from "../redux/profile-reducer"
 import React from "react"
 import { storeType } from "../../App"
 import StoreContext from "../../StoreContext"
@@ -17,6 +17,7 @@ type MapStateToPropsType = {
     profile: postMessagesPropsType
     user: UserType | null
     userId: number
+    status: string
 }
 
 type MapDispatchToPropsType = {
@@ -24,6 +25,8 @@ type MapDispatchToPropsType = {
     addUser: (user: UserType) => void
     changeUserId: (id: number) => void
     addUserTh: (params: number) => void
+    addStatusAC: (id: number) => void
+    changeStatusAC: (value: string) => void
 }
 type OwnPropsType = {
 
@@ -56,12 +59,16 @@ export class Profile extends React.Component<ProfileClassType> {
 
     componentDidMount(): void {
         this.props.addUserTh(this.props.params)
+        setTimeout(() => {
+            this.props.addStatusAC(this.props.params)
+        }, 1000)
+
     }
 
     render() {
         return (
             <StyledProfile>
-                <ProfileInfo user={this.props.user} />
+                <ProfileInfo changeStatusAC={this.props.changeStatusAC} status={this.props.status} user={this.props.user} />
                 <MyPost profile={this.props.profile} addPost={this.props.addPostAction} />
             </StyledProfile >
         )
@@ -86,7 +93,8 @@ let mapStateToProps = (state: AppRootreducer): MapStateToPropsType => {
     return {
         profile: state.profile,
         user: state.profile.user,
-        userId: state.profile.userId
+        userId: state.profile.userId,
+        status: state.profile.status,
     }
 }
 
@@ -105,7 +113,7 @@ export let ProfileConteiner = compose(
     withRouter,
     connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppRootreducer>(mapStateToProps, {
         addPostAction,
-        addUser, changeUserId, addUserTh
+        addUser, changeUserId, addUserTh, addStatusAC, changeStatusAC
     }),
     redirect,
 )(Profile)

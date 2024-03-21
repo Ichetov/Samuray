@@ -1,4 +1,4 @@
-import { addUsersAp } from "../../api/api";
+import { addStatusAp, addUsersAp, changeStatusAp } from "../../api/api";
 import { PostType } from "../profile/posts/post/Post";
 import iconPost from './../../images/108261978.fe2e75d1.160x160o.40118e6a2177@2x.jpeg';
 
@@ -22,12 +22,14 @@ export const CHANGE_TEXT = 'CHANGE-TEXT';
 export const CHANGE_LOAD = 'CHANGE-LOAD';
 export const ADD_USER = 'ADD-USER';
 export const CHANGE_ID = 'CHANGE_ID'
+export const ADD_STATUS = 'ADD-STATUS'
 
 export type postMessagesPropsType = {
     postMessages: Array<PostType>
     postInputText: string
     userId: number
     user: UserType | null
+    status: string
 }
 
 export type ChangePostActionType = {
@@ -75,14 +77,8 @@ export type AddUserType = {
     user: UserType
 }
 
-export const addUser = (user: UserType): AddUserType => {
-    return {
-        type: ADD_USER,
-        user
-    }
-}
 
-export type ProfileActions = ChangePostActionType | AddPostActionType | AddUserType | changeUserIdType;
+export type ProfileActions = ChangePostActionType | AddPostActionType | AddUserType | changeUserIdType | addStatusType;
 
 let initialState: postMessagesPropsType = {
     postMessages: [
@@ -92,7 +88,8 @@ let initialState: postMessagesPropsType = {
     ],
     postInputText: '',
     userId: 24630,
-    user: null
+    user: null,
+    status: ''
 }
 
 type changeUserIdType = {
@@ -122,12 +119,56 @@ export const profileReducer = (state: postMessagesPropsType = initialState, acti
             return {
                 ...state, userId: action.id
             }
+        case ADD_STATUS:
+            return {
+                ...state, status: action.payload.value
+            }
         default:
             return state;
     }
 
 
 }
+
+
+export type addStatusType = ReturnType<typeof addStatus>
+
+export const addStatus = (value: string) => {
+    return {
+        type: ADD_STATUS,
+        payload: {
+            value
+        }
+    } as const
+}
+
+export const addStatusAC = (id: number) => {
+    return (dispatch: any) => {
+        addStatusAp(id).then((val) => {
+            dispatch(addStatus(val.data))
+        })
+    }
+}
+
+export const changeStatusAC = (value: string) => {
+    return (dispatch: any) => {
+        changeStatusAp(value)
+            .then(val => {
+                if (val.resultCode === 0) {
+                    dispatch(addStatus(value))
+                }
+            })
+    }
+}
+
+
+export const addUser = (user: UserType): AddUserType => {
+    return {
+        type: ADD_USER,
+        user
+    }
+}
+
 
 
 export const addUserTh = (params: number) => {
@@ -138,3 +179,20 @@ export const addUserTh = (params: number) => {
             })
     }
 }
+
+
+export const changeUserTh = (value: string) => {
+    return (dispatch: any) => {
+        changeStatusAp(value)
+            .then((val: any) => {
+                if (val.data.resultCode === 0) {
+                    dispatch(addUser(val.data))
+                }
+            })
+    }
+}
+
+
+
+
+

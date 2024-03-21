@@ -85,7 +85,7 @@ export const Dialogs: React.FC<DialogsConteinerType> = ({ isAuth, dialogsData, a
             </Wrapper>
             <div><TextAreaStyled onKeyDown={onKeyDownHandler} $error={error} onChange={changeTextareaHandler} value={textValue} ></TextAreaStyled></div>
             {error && <div>Нельзя ввести одни пробелы!</div>}
-            <button disabled={!textValue} onClick={addMessagesHeandler}>Добавить</button>
+            <button disabled={!textValue || !!error} onClick={addMessagesHeandler}>Добавить</button>
         </StyledMessages>
     )
 }

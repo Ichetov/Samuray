@@ -12,7 +12,8 @@ test('adding posts', () => {
         ],
         postInputText: '',
         userId: 0,
-        user: null
+        user: null,
+        status: ''
     }
 
     let endState = profileReducer(initialState, addPostAction('Test'));

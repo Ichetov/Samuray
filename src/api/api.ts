@@ -45,6 +45,19 @@ export const me = () => {
         })
 }
 
-export const getProfile = (id: number)=>{
-   return instance.get(`profile/${id}`)
+export const getProfile = (id: number) => {
+    return instance.get(`profile/${id}`)
 }
+
+
+export const addStatusAp = (id: number) => {
+   return instance.get(`/profile/status/${id}`)
+}
+
+export const changeStatusAp = (value: string) => {
+    return instance.put(`/profile/status`, {
+      status: value
+    }).then((val)=>{
+        return val.data
+    })
+ }
